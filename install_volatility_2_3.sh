@@ -49,5 +49,13 @@ sudo ln -s /opt/volatility3/vol.py /usr/bin/vol3.py
 sudo ln -s /opt/volatility3/vol.py /usr/bin/volatility3
 
 echo '=========================================='
+echo ' Install Volatility 3 Symbol Tables Packs for Windows, Linux and MacOS'
+echo '=========================================='
+cd /opt/volatility3/volatility3/symbols
+wget https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip
+wget https://downloads.volatilityfoundation.org/volatility3/symbols/mac.zip
+wget https://downloads.volatilityfoundation.org/volatility3/symbols/linux.zip
+
+echo '=========================================='
 echo ' Volatility 2 and 3 installed'
 echo '=========================================='
