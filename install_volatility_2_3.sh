@@ -67,9 +67,10 @@ echo 'MODULE_LICENSE("GPL");' >> /opt/volatility/tools/linux/module.c
 # make -C /lib/modules/$(uname -r)/build/ CONFIG_DEBUG_INFO=y M=$PWD modules
 make
 # dwarfdump -di ./module.o > ~/dwarf
-zip Debian-$(uname -r).zip module.dwarf /boot/System.map-$(uname -r)
+# zip Debian-$(uname -r).zip module.dwarf /boot/System.map-$(uname -r)
+zip $(lsb_release -i -s)_$(uname -r)_profile.zip ./volatility/tools/linux/module.dwarf /boot/System.map-$(uname -r)
 # Copy the new profile
-sudo cp Debian-*.zip /opt/volatility/volatility/plugins/overlays/linux/
+sudo cp $(lsb_release -i -s)_*.zip /opt/volatility/volatility/plugins/overlays/linux/
 
 
 echo '=========================================='
