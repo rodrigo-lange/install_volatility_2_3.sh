@@ -18,6 +18,8 @@ sudo ln -s /usr/local/lib/python2.7/dist-packages/usr/lib/libyara.so /usr/lib/li
 # Baixa a pasta e instala
 git clone https://github.com/volatilityfoundation/volatility.git
 chmod +x volatility/vol.py
+# Executa com Python2
+sed -i 's\#!/usr/bin/env python\#!/usr/bin/env python2\g' volatility/vol.py
 sudo mv volatility /opt
 sudo ln -s /opt/volatility/vol.py /usr/bin/vol2.py
 sudo ln -s /opt/volatility/vol.py /usr/bin/volatility2
