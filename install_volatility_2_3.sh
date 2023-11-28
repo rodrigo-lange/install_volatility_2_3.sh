@@ -5,7 +5,7 @@ echo '=========================================='
 echo ' Install system dependencies'
 echo '=========================================='
 sudo apt update
-sudo apt install -y build-essential git libdistorm3-dev yara libraw1394-11 libcapstone-dev capstone-tool tzdata
+sudo apt install -y build-essential git libdistorm3-dev yara libraw1394-11 libcapstone-dev capstone-tool tzdata dwarfdump linux-headers-$(uname -r)
 
 echo '=========================================='
 echo ' Install pip for Python 2'
@@ -55,6 +55,22 @@ cd /opt/volatility3/volatility3/symbols
 wget https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip
 wget https://downloads.volatilityfoundation.org/volatility3/symbols/mac.zip
 wget https://downloads.volatilityfoundation.org/volatility3/symbols/linux.zip
+
+echo '=========================================='
+echo ' Create Volatility 2 profile'
+echo '=========================================='
+cd /opt/volatility/tools/linux/
+# Gambiarra pois o arquivo module.c não tem a licença definida
+# fonte: https://github.com/volatilityfoundation/volatility/issues/807
+echo 'MODULE_LICENSE("GPL");' >> /opt/volatility/tools/linux/module.c
+# Build the profile 
+# make -C /lib/modules/$(uname -r)/build/ CONFIG_DEBUG_INFO=y M=$PWD modules
+make
+# dwarfdump -di ./module.o > ~/dwarf
+zip Debian-$(uname -r).zip module.dwarf /boot/System.map-$(uname -r)
+# Copy the new profile
+sudo cp Debian-*.zip /opt/volatility/volatility/plugins/overlays/linux/
+
 
 echo '=========================================='
 echo ' Volatility 2 and 3 installed'
