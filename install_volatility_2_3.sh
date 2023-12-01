@@ -5,6 +5,7 @@ echo '=========================================='
 echo ' Install system dependencies'
 echo '=========================================='
 apt update
+apt autoremove -y
 apt install -y build-essential git libdistorm3-dev yara libraw1394-11 libcapstone-dev capstone-tool tzdata dwarfdump linux-headers-$(uname -r) dwarf2json linux-image-$(uname -r)-dbg
 
 echo '=========================================='
@@ -19,17 +20,22 @@ echo '=========================================='
 echo ' Install Volatility 2 and its Python dependencies'
 echo '=========================================='
 python2 -m pip install -U distorm3 yara pycrypto pycryptodome pillow openpyxl ujson pytz ipython capstone
-python2 -m pip install yara
+#python2 -m pip install yara
 ln -s /usr/local/lib/python2.7/dist-packages/usr/lib/libyara.so /usr/lib/libyara.so
 git clone https://github.com/volatilityfoundation/volatility.git
-mv volatility /opt/volatility
-chmod +x /opt/volatility/vol.py
-# Para executar diretamente pelo Python2
-sed -i 's\#!/usr/bin/env python\#!/usr/bin/env python2\' /opt/volatility/vol.py
-# Renomeia vol.py para vol2.py para diferenciar versão 2 e 3
-mv /opt/volatility/vol.py /opt/volatility/vol.py
-# Cria link
-ln -s /opt/volatility/vol.py /usr/bin/vol2.py 
+mv volatility /opt/.
+cd /opt/volatility
+python2 setup.py build
+python2 setup.py install
+mv /usr/local/bin/vol.py /usr/local/bin/vol2.py
+cd /root
+#chmod +x /opt/volatility/vol.py
+## Para executar diretamente pelo Python2
+#sed -i 's\#!/usr/bin/env python\#!/usr/bin/env python2\' /opt/volatility/vol.py
+## Renomeia vol.py para vol2.py para diferenciar versão 2 e 3
+#mv /opt/volatility/vol.py /opt/volatility/vol.py
+## Cria link
+#ln -s /opt/volatility/vol.py /usr/bin/vol2.py 
 
 echo '=========================================='
 echo ' Install pip for Python 3'
@@ -42,6 +48,9 @@ echo '=========================================='
 python3 -m pip install -U distorm3 yara pycryptodome pillow openpyxl ujson pytz ipython capstone
 git clone https://github.com/volatilityfoundation/volatility3.git
 mv volatility3 /opt/.
+cd /opt/volatility3
+python3 setup.py build
+python3 setup.py install
 ln -s /opt/volatility3/vol.py /usr/bin/vol3.py
 
 echo '=========================================='
